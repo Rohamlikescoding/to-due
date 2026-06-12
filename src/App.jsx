@@ -3,11 +3,13 @@ import { useState } from "react";
 function App() {
   const [count, setCount] = useState(0);
   const headerClass = "bg-sky-200/35 rounded-md p-1 shadow-md flex";
-  const headerButtonClass = "px-2 border-l-2 border-sky-800/10 text-lg ";
-  const taskButtonClass = "text-2xl leading-loose border-l-2 border-sky-500/10";
+  const headerButtonClass =
+    "duration-100   overflow-hidden hover:scale-125 ease-in px-2 border-l-2 border-sky-800/10 text-lg ";
+  const taskButtonClass =
+    "ease-in duration-100  overflow-hidden hover:scale-125 text-2xl ml-1 pl-1 leading-loose border-l-2 border-sky-500/10";
   return (
     <>
-      <header className="bg-sky-800/65  p-4 flex w-screen justify-between border-sky-300/30 border-b-2">
+      <header className="bg-sky-800/65  p-4 flex w-screen justify-between border-sky-300/30 border-b-2 overflow-hidden">
         <div className={headerClass}>TO DUE 🔥🧯</div>
 
         <div className={`${headerClass} justify-between `}>
