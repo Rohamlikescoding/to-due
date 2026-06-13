@@ -1,32 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 
-const exampleTask = [
-  {
-    emoji: "💟",
-    name: "Task Name",
-    dits: "Task describe",
-    id: crypto.randomUUID(),
-    progress: undefined,
-  },
-  {
-    emoji: "💌",
-    name: "Task Name",
-    dits: "Task describe",
-    id: crypto.randomUUID(),
-    progress: undefined,
-  },
-  {
-    emoji: "",
-    name: "Task Name",
-    dits: "Task describe",
-    id: crypto.randomUUID(),
-    progress: undefined,
-  },
-];
-
 function TaskList() {
-  const [tasks, setTasks] = useState(exampleTask);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  async function handleDelete(id) {
+    setLoading(false);
+    const oldTasks = tasks;
+    try {
+      await fetch(`http://localhost:8000/tasks/${id}`, {
+        method: "DELETE",
+      });
+      setTasks((prev) => prev.filter((t) => t.id !== id));
+    } catch (e) {
+      console.log("Error deleting tasks:", e);
+      setTasks(oldTasks);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    async function taskFetch() {
+      setLoading(true);
+      try {
+        const res = await fetch("http://localhost:8000/tasks");
+        const data = await res.json();
+        console.log(data);
+        setTasks(data);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    taskFetch();
+  }, []);
 
   if (!tasks.length)
     return (
@@ -71,9 +82,7 @@ function TaskList() {
           </Button>
           <Button
             className=" ml-1 pl-1 leading-loose text-2xl border-sky-500/10"
-            onClick={() =>
-              setTasks((prev) => prev.filter((t) => t.id !== task.id))
-            }
+            onClick={() => handleDelete(task.id)}
           >
             ❌
           </Button>
