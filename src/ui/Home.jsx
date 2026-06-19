@@ -70,10 +70,10 @@ function Home() {
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              to="/tasks"
+              to="/login"
               className="rounded-xl bg-slate-900 px-8 py-4 text-lg font-semibold text-white transition hover:scale-105"
             >
-              <a href="vsdsd">Get Started</a>
+              Get Started
             </Link>
           </div>
           <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-sm font-medium text-slate-700">

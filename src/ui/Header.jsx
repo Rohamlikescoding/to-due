@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Button from "./Button";
 import { Link } from "react-router-dom";
-
-const headerClass = "bg-sky-200/35 rounded-md p-0 md:p-1 shadow-md flex";
+import user from "../features/user/user";
+const headerClass =
+  "bg-sky-200/35 rounded-md  py-3 px-1  md:px-2 shadow-md flex max-h-full ";
 
 function Header({ setTasks, onAddClick }) {
   async function handleDelete() {
@@ -30,8 +31,8 @@ function Header({ setTasks, onAddClick }) {
   }
 
   return (
-    <header className="py-2 sticky bg-sky-800/65 p-1 md:p-4 flex max-w-screen justify-between border-sky-300/30 border-b-2 overflow-hidden">
-      <Link to="/" className={headerClass}>
+    <header className=" py-2 sticky bg-sky-800/65 p-1 md:p-4 flex max-w-screen justify-between border-sky-300/30 border-b-2 overflow-hidden">
+      <Link to="/" className={`${headerClass} text-xl font-bold`}>
         TO DUE 🔥🧯
       </Link>
 
@@ -48,7 +49,10 @@ function Header({ setTasks, onAddClick }) {
         </Button>
       </div>
 
-      <div className={headerClass}>img</div>
+      <img
+        className="h-12 w-12 rounded-full border-solid border-2 border-sky-900"
+        src={user.avatar}
+      ></img>
     </header>
   );
 }

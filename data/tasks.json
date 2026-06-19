@@ -5,7 +5,7 @@
       "name": "Task Name",
       "detail": "Task describe",
       "id": "12458",
-      "progress": false
+      "progress": true
     },
     {
       "emoji": "💌",
@@ -46,7 +46,7 @@
       "emoji": "✝",
       "name": "jesus",
       "detail": "yaaay",
-      "progress": false,
+      "progress": true,
       "id": "k299J2VkRUs"
     }
   ],
