@@ -11,9 +11,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/fiber": "^8.18.0",
+    "@shadergradient/react": "^2.4.20",
+    "camera-controls": "^3.1.2",
     "json-server": "^1.0.0-beta.15",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router": "^7.18.0",
+    "react-router-dom": "^7.18.0",
+    "three": "^0.184.0",
+    "three-stdlib": "^2.36.1"
   },
   "devDependencies": {
     "@eslint-react/eslint-plugin": "^5.8.18",

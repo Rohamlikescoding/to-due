@@ -1,9 +1,9 @@
 import TaskList from "../features/task/TaskList";
 
-function MainContent() {
+function MainContent({ setTasks, tasks }) {
   return (
-    <main className=" max-h-max">
-      <TaskList />
+    <main className=" max-h-max overflow-y-auto">
+      <TaskList setTasks={setTasks} tasks={tasks} />
     </main>
   );
 }

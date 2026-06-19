@@ -1,18 +1,43 @@
 import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 
-function TaskList() {
-  const [tasks, setTasks] = useState([]);
+function TaskList({ setTasks, tasks }) {
+  // const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
 
   async function handleDelete(id) {
-    setLoading(false);
-    const oldTasks = tasks;
+    setLoading(true);
+    const oldTasks = [...tasks];
     try {
       await fetch(`http://localhost:8000/tasks/${id}`, {
         method: "DELETE",
       });
       setTasks((prev) => prev.filter((t) => t.id !== id));
+    } catch (e) {
+      console.log("Error deleting tasks:", e);
+      setTasks(oldTasks);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleCompleted(id) {
+    setLoading(true);
+    const oldTasks = [...tasks];
+    const currentTask = tasks.find((task) => task.id === id);
+
+    try {
+      const res = await fetch(`http://localhost:8000/tasks/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          progress: !currentTask.progress,
+        }),
+      });
+      if (!res.ok) throw new Error("Failed to update task");
+
+      setTasks((prev) =>
+        prev.map((t) => (t.id === id ? { ...t, progress: !t.progress } : t)),
+      );
     } catch (e) {
       console.log("Error deleting tasks:", e);
       setTasks(oldTasks);
@@ -60,7 +85,7 @@ function TaskList() {
           <div className="pl-2">
             <p className="font-semibold">{task.name}</p>
             <p className="font-light hover:font-normal duration-200 ease-in-out text-wrap">
-              {task.dits}
+              {task.detail}
             </p>
           </div>
         </section>
@@ -70,13 +95,7 @@ function TaskList() {
           </Button>
           <Button
             className=" ml-1 pl-1 leading-loose text-2xl border-sky-500/10"
-            onClick={() =>
-              setTasks((prev) =>
-                prev.map((t) =>
-                  t.id === task.id ? { ...t, progress: true } : t,
-                ),
-              )
-            }
+            onClick={() => handleCompleted(task.id)}
           >
             ✔
           </Button>

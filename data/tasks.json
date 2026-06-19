@@ -3,23 +3,52 @@
     {
       "emoji": "💟",
       "name": "Task Name",
-      "dits": "Task describe",
-      "id": 12458,
+      "detail": "Task describe",
+      "id": "12458",
       "progress": false
     },
     {
       "emoji": "💌",
       "name": "Task Name",
-      "dits": "Task describe",
-      "id": 2500,
+      "detail": "Task describe",
+      "id": "2500",
       "progress": false
     },
     {
       "emoji": "",
       "name": "Task Name",
-      "dits": "Task describe",
-      "id": 14568,
+      "detail": "Task describe",
+      "id": "14568",
       "progress": false
+    },
+    {
+      "emoji": "💔",
+      "name": "does it work?",
+      "detail": "god",
+      "progress": false,
+      "id": "AvhhFuAI6qU"
+    },
+    {
+      "emoji": "💞",
+      "name": "kiss",
+      "detail": "love",
+      "progress": false,
+      "id": "N-pO620qS5k"
+    },
+    {
+      "emoji": "🤎",
+      "name": "ppo",
+      "detail": "cdscds",
+      "progress": false,
+      "id": "2i9a5627fjk"
+    },
+    {
+      "emoji": "✝",
+      "name": "jesus",
+      "detail": "yaaay",
+      "progress": false,
+      "id": "k299J2VkRUs"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
