@@ -1,8 +1,11 @@
 import { ShaderGradientCanvas, ShaderGradient } from "@shadergradient/react";
 import Header from "./Header";
 import { Link } from "react-router";
+import { useSelector } from "react-redux";
 
 function Home() {
+  const isAuthenticated = useSelector((store) => store.user.isAuthenticated);
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       <ShaderGradientCanvas
@@ -70,7 +73,7 @@ function Home() {
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              to="/login"
+              to={isAuthenticated ? "/app" : "/login"}
               className="rounded-xl bg-slate-900 px-8 py-4 text-lg font-semibold text-white transition hover:scale-105"
             >
               Get Started

@@ -1,33 +1,28 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
-import user from "../features/user/user";
+import fakeUser from "../features/user/user";
 import { Link } from "react-router-dom";
-
-// import PageNav from "../components/PageNav";
-// import { useAuth } from "../contexts/FakeAuthContext";
-// import styles from "./Login.module.css";
+import { login } from "../features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useEffect, useState } from "react";
 
 export default function Login() {
-  // PRE-FILL FOR DEV PURPOSES
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const navigate = useNavigate();
 
-  console.log(user);
-  //   const { login, isAuthenticated } = useAuth();
+  const isAuthenticated = useSelector((store) => store.user.isAuthenticated);
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (email == user.email && password == user.password) {
-      setIsAuthenticated(true);
+    if (email == fakeUser.email && password == fakeUser.password) {
+      dispatch(login(fakeUser));
     } else {
       alert("please enter a correct email and password");
     }
-    // if (email && password) login(email, password);
   }
 
   useEffect(

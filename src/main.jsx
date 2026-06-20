@@ -6,14 +6,27 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./ui/Home";
 import Login from "./ui/Login.jsx";
 
+import { store } from "./store/store.js";
+import { Provider } from "react-redux";
+import ProtectedRoute from "./store/ProtectedRoute.jsx";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<Home />} />
-        <Route path="/app" element={<App />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<Home />} />
+          <Route
+            path="/app"
+            element={
+              <ProtectedRoute>
+                <App />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
 );
