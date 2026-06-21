@@ -1,12 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Button from "../../ui/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { completeTask, fetchTasks } from "../task/taskSlice";
+import Loader from "../../ui/Loader";
+function TaskList({ setTasks }) {
+  const { tasks, loading, error } = useSelector((store) => store.task);
+  const dispatch = useDispatch();
 
-function TaskList({ setTasks, tasks }) {
-  // const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    dispatch(fetchTasks());
+  }, []);
 
   async function handleDelete(id) {
-    setLoading(true);
     const oldTasks = [...tasks];
     try {
       await fetch(`http://localhost:8000/tasks/${id}`, {
@@ -17,52 +22,9 @@ function TaskList({ setTasks, tasks }) {
       console.log("Error deleting tasks:", e);
       setTasks(oldTasks);
     } finally {
-      setLoading(false);
+      console.log("done");
     }
   }
-
-  async function handleCompleted(id) {
-    setLoading(true);
-    const oldTasks = [...tasks];
-    const currentTask = tasks.find((task) => task.id === id);
-
-    try {
-      const res = await fetch(`http://localhost:8000/tasks/${id}`, {
-        method: "PATCH",
-        body: JSON.stringify({
-          progress: !currentTask.progress,
-        }),
-      });
-      if (!res.ok) throw new Error("Failed to update task");
-
-      setTasks((prev) =>
-        prev.map((t) => (t.id === id ? { ...t, progress: !t.progress } : t)),
-      );
-    } catch (e) {
-      console.log("Error deleting tasks:", e);
-      setTasks(oldTasks);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    async function taskFetch() {
-      setLoading(true);
-      try {
-        const res = await fetch("http://localhost:8000/tasks");
-        const data = await res.json();
-        console.log(data);
-        setTasks(data);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    taskFetch();
-  }, []);
 
   if (!tasks.length)
     return (
@@ -95,7 +57,10 @@ function TaskList({ setTasks, tasks }) {
           </Button>
           <Button
             className=" ml-1 pl-1 leading-loose text-2xl border-sky-500/10"
-            onClick={() => handleCompleted(task.id)}
+            disabled={!loading}
+            onClick={() =>
+              dispatch(completeTask({ id: task.id, progress: task.progress }))
+            }
           >
             ✔
           </Button>

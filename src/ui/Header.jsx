@@ -2,10 +2,13 @@ import { useState } from "react";
 import Button from "./Button";
 import { Link } from "react-router-dom";
 import user from "../features/user/user";
+import { logout } from "../features/user/userSlice";
+import { useDispatch } from "react-redux";
 const headerClass =
   "bg-sky-200/35 rounded-md  py-3 px-1  md:px-2 shadow-md flex max-h-full ";
 
 function Header({ setTasks, onAddClick }) {
+  const dispatch = useDispatch();
   async function handleDelete() {
     const userConfirmed = window.confirm(
       "Are you sure you want to delete all tasks?",
@@ -48,11 +51,15 @@ function Header({ setTasks, onAddClick }) {
           🧹
         </Button>
       </div>
-
-      <img
-        className="h-12 w-12 rounded-full border-solid border-2 border-sky-900"
-        src={user.avatar}
-      ></img>
+      <div className="group relative">
+        <img
+          title="click to logout"
+          className="h-12 w-12 rounded-full border-solid border-2 border-sky-900 cursor-pointer"
+          src={user.avatar}
+          alt="avatar"
+          onClick={() => dispatch(logout())}
+        ></img>
+      </div>
     </header>
   );
 }
