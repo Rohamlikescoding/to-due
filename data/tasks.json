@@ -36,18 +36,18 @@
       "id": "N-pO620qS5k"
     },
     {
-      "emoji": "🤎",
-      "name": "ppo",
-      "detail": "cdscds",
+      "emoji": "💖",
+      "name": "meow",
+      "detail": "mew mew mew",
       "progress": false,
-      "id": "2i9a5627fjk"
+      "id": "1BqZPRZlcTY"
     },
     {
-      "emoji": "✝",
-      "name": "jesus",
-      "detail": "yaaay",
-      "progress": true,
-      "id": "k299J2VkRUs"
+      "emoji": "fjh gfchgc",
+      "name": "vlhgl",
+      "detail": "gblgl",
+      "progress": false,
+      "id": "VHbbj_eCFp8"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

@@ -1,30 +1,15 @@
 import { useEffect } from "react";
 import Button from "../../ui/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { completeTask, fetchTasks } from "../task/taskSlice";
+import { completeTask, fetchTasks, deleteTask } from "../task/taskSlice";
 import Loader from "../../ui/Loader";
-function TaskList({ setTasks }) {
+function TaskList() {
   const { tasks, loading, error } = useSelector((store) => store.task);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchTasks());
   }, []);
-
-  async function handleDelete(id) {
-    const oldTasks = [...tasks];
-    try {
-      await fetch(`http://localhost:8000/tasks/${id}`, {
-        method: "DELETE",
-      });
-      setTasks((prev) => prev.filter((t) => t.id !== id));
-    } catch (e) {
-      console.log("Error deleting tasks:", e);
-      setTasks(oldTasks);
-    } finally {
-      console.log("done");
-    }
-  }
 
   if (!tasks.length)
     return (
@@ -66,7 +51,7 @@ function TaskList({ setTasks }) {
           </Button>
           <Button
             className=" ml-1 pl-1 leading-loose text-2xl border-sky-500/10"
-            onClick={() => handleDelete(task.id)}
+            onClick={() => dispatch(deleteTask(task.id))}
           >
             ❌
           </Button>

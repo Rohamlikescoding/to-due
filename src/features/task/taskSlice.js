@@ -42,6 +42,16 @@ const taskSlice = createSlice({
       .addCase(completeTask.rejected, (state, action) => {
         state.error = action.error.message;
         state.loading = false;
+      })
+      .addCase(deleteTask.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.tasks = state.tasks.filter((t) => t.id !== action.payload);
+      })
+      .addCase(deleteTask.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
       });
   },
 });
@@ -67,9 +77,20 @@ export const completeTask = createAsyncThunk(
     });
     if (!res.ok) throw new Error("Failed to update task");
     const data = await res.json();
+
     return data;
   },
 );
 
-export const { createTask, deleteTask } = taskSlice.actions;
+export const deleteTask = createAsyncThunk("task/deleteTask", async (id) => {
+  const res = await fetch(`http://localhost:8000/tasks/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Failed to delete task");
+  const data = await res.json();
+  console.log(id);
+  return id;
+});
+
+export const { createTask } = taskSlice.actions;
 export default taskSlice.reducer;
