@@ -1,53 +1,40 @@
 {
   "tasks": [
     {
-      "emoji": "💟",
-      "name": "Task Name",
-      "detail": "Task describe",
-      "id": "12458",
-      "progress": false
-    },
-    {
-      "emoji": "💌",
-      "name": "Task Name",
-      "detail": "Task describe",
-      "id": "2500",
-      "progress": false
-    },
-    {
-      "emoji": "",
-      "name": "Task Name",
-      "detail": "Task describe",
-      "id": "14568",
-      "progress": false
-    },
-    {
-      "emoji": "💔",
-      "name": "does it work?",
-      "detail": "god",
+      "emoji": "💖",
+      "name": "task.time && !task.progress",
+      "detail": "task.time && !task.progress",
       "progress": false,
-      "id": "AvhhFuAI6qU"
-    },
-    {
-      "emoji": "💞",
-      "name": "kiss",
-      "detail": "love",
-      "progress": false,
-      "id": "N-pO620qS5k"
+      "timer": 0,
+      "timerRunning": false,
+      "id": "U4Zsn5pd4uA"
     },
     {
       "emoji": "💖",
-      "name": "meow",
-      "detail": "mew mew mew",
+      "name": "0",
+      "detail": "vfd",
       "progress": false,
-      "id": "1BqZPRZlcTY"
+      "timer": 0,
+      "timerRunning": false,
+      "id": "eFJ5NXqH5vY"
     },
     {
-      "emoji": "fjh gfchgc",
-      "name": "vlhgl",
-      "detail": "gblgl",
+      "emoji": "🛐",
+      "name": "hey",
+      "detail": "what you doin",
       "progress": false,
-      "id": "VHbbj_eCFp8"
+      "timer": 0,
+      "timerRunning": false,
+      "id": "Fxn6AmU4UkA"
+    },
+    {
+      "emoji": "💖",
+      "name": "task.time && !task.progress",
+      "detail": "task.time && !task.progress",
+      "progress": false,
+      "timer": 0,
+      "timerRunning": false,
+      "id": "U4Zsn5pd4uA"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

@@ -1,22 +1,69 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { completeTask, fetchTasks, deleteTask } from "../task/taskSlice";
+import {
+  completeTask,
+  fetchTasks,
+  deleteTask,
+  timeForTask,
+  timerCounter,
+  setTimer,
+} from "../task/taskSlice";
 import Loader from "../../ui/Loader";
+
 function TaskList() {
-  const { tasks, loading, error } = useSelector((store) => store.task);
+  const { tasks, loading, error, searchQuery } = useSelector(
+    (store) => store.task,
+  );
+
+  const filteredTasks = tasks.filter((task) =>
+    task.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
   const dispatch = useDispatch();
+
+  function timeHandeler(e, taskId) {
+    console.log(e.target.value);
+    dispatch(
+      setTimer({
+        id: taskId,
+        timer: Number(e.target.value) * 60,
+      }),
+    );
+  }
+  function formatTime(seconds) {
+    const min = Math.floor(seconds / 60);
+
+    const sec = seconds % 60;
+
+    return `${min}:${sec < 10 ? "0" : ""}${sec}`;
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      tasks.forEach((task) => {
+        if (task.timer > 0) dispatch(timerCounter(task.id));
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [dispatch, tasks]);
 
   useEffect(() => {
     dispatch(fetchTasks());
   }, []);
+
+  if (loading) return <Loader />; // you already import this but never use it
 
   if (!tasks.length)
     return (
       <div className="my-20 mx-auto text-3xl">Create your first task!</div>
     );
 
-  return tasks.map((task) => {
+  if (!filteredTasks.length)
+    return <div className="my-20 mx-auto text-3xl">No tasks found!</div>;
+
+  return filteredTasks.map((task) => {
     return (
       <div
         className={`flex w-1vw p-4 justify-between border-2 border-sky-500/10 rounded-md  m-2  ${task.progress ? "bg-sky-900/40 opacity-50 line-through" : "bg-sky-100"}`}
@@ -37,12 +84,27 @@ function TaskList() {
           </div>
         </section>
         <div>
-          <Button className=" ml-1 pl-1 leading-loose text-2xl border-sky-500/10">
-            ⏰
+          {task.time && !task.progress ? (
+            <input
+              type="number"
+              onChange={(e) => timeHandeler(e, task.id)}
+            ></input>
+          ) : null}
+
+          <Button
+            disabled={task.progress}
+            className=" ml-1 pl-1 leading-loose text-2xl border-sky-500/10"
+            onClick={() => dispatch(timeForTask(task.id))}
+          >
+            {task.timer > 0 ? (
+              <p>⏰ {formatTime(task.timer)}</p>
+            ) : (
+              <span>⏰</span>
+            )}
           </Button>
           <Button
             className=" ml-1 pl-1 leading-loose text-2xl border-sky-500/10"
-            disabled={!loading}
+            disabled={loading}
             onClick={() =>
               dispatch(completeTask({ id: task.id, progress: task.progress }))
             }

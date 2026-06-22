@@ -3,28 +3,24 @@ import Button from "./Button";
 import { Link } from "react-router-dom";
 import user from "../features/user/user";
 import { logout } from "../features/user/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearTasks, sortTasks } from "../features/task/taskSlice";
 const headerClass =
   "bg-sky-200/35 rounded-md  py-3 px-1  md:px-2 shadow-md flex max-h-full ";
 
-function Header({ setTasks, onAddClick }) {
+function Header({ onAddClick }) {
+  const { tasks } = useSelector((store) => store.task);
   const dispatch = useDispatch();
   async function handleDelete() {
     const userConfirmed = window.confirm(
-      "Are you sure you want to delete all tasks?",
+      "Are you sure you want to delete completed tasks?",
     );
     if (!userConfirmed) return;
-    const res = await fetch(`http://localhost:8000/tasks`);
-    const data = await res.json();
-    console.log(data);
-
     try {
-      data.map(async (item) => {
-        console.log(item);
-        await fetch(`http://localhost:8000/tasks/${item.id}`, {
-          method: "DELETE",
-        });
-        setTasks([]);
+      tasks.map(async (item) => {
+        if (item.progress) {
+          dispatch(clearTasks(item.id));
+        }
       });
     } catch (e) {
       console.log("Error deleting tasks:", e);
@@ -40,7 +36,12 @@ function Header({ setTasks, onAddClick }) {
       </Link>
 
       <div className={`${headerClass} justify-between `}>
-        <span className="px-1 md:px-2">Remaining: %%</span>
+        <Button
+          className="px-1 md:px-2 border-transparent"
+          onClick={() => dispatch(sortTasks())}
+        >
+          ⬇
+        </Button>
         <Button className="px-1 md:px-2 border-sky-800/10" onClick={onAddClick}>
           ➕
         </Button>

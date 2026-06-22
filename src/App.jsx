@@ -5,22 +5,15 @@ import MainContent from "./ui/MainContent";
 import AddForm from "./ui/AddForm";
 
 function App() {
-  const [tasks, setTasks] = useState([]);
   const [isForm, setIsForm] = useState(false);
 
   return (
-    <div className="min-h-screen">
-      <Header setTasks={setTasks} onAddClick={() => setIsForm(true)} />
+    <div className="h-screen flex flex-col">
+      <Header onAddClick={() => setIsForm(true)} />
 
-      {isForm && (
-        <AddForm
-          onClose={() => setIsForm(false)}
-          setTasks={setTasks}
-          setIsForm={setIsForm}
-        />
-      )}
+      {isForm && <AddForm onClose={() => setIsForm(false)} />}
 
-      <MainContent tasks={tasks} setTasks={setTasks} />
+      <MainContent />
       <Footer />
     </div>
   );

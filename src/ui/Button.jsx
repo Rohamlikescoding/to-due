@@ -1,6 +1,7 @@
-function Button({ className, children, onClick, onSubmit }) {
+function Button({ className, children, onClick, onSubmit, disabled }) {
   return (
     <button
+      disabled={disabled}
       onClick={onClick}
       className={
         className

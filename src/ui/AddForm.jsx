@@ -1,43 +1,31 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { createTask } from "../features/task/taskSlice";
 
-function AddForm({ setIsForm, setTasks }) {
-  const [task, setTask] = useState({
+function AddForm({ onClose }) {
+  const initialTask = {
     emoji: "",
     name: "",
     detail: "",
     progress: false,
-  });
+    timer: 0,
+    timerRunning: false,
+  };
+  const [task, setTask] = useState(initialTask);
+  const dispatch = useDispatch();
 
   function handleClose(e) {
     e.preventDefault();
-    setIsForm(false);
+    onClose();
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
+    dispatch(createTask(task));
 
-    try {
-      const postReq = await fetch("http://localhost:8000/tasks", {
-        method: "POST",
-        body: JSON.stringify(task),
-      });
+    setTask(initialTask);
 
-      if (!postReq.ok) {
-        throw new Error("Failed to create task");
-      }
-
-      const data = await postReq.json();
-
-      setTasks((prevData) => [...prevData, data]);
-
-      console.log(data);
-    } catch {
-      console.error(e);
-    } finally {
-      console.log(task);
-      setIsForm(false);
-    }
+    onClose();
   }
 
   return (

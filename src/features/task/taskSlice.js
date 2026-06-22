@@ -5,15 +5,50 @@ const initialState = {
   loading: false,
   tasks: [],
   error: null,
+  searchQuery: "",
 };
 
 const taskSlice = createSlice({
   name: "task",
   initialState,
   reducers: {
-    // createTask(state, payload) {},
-    // editTask(state, payload) {},
-    // deleteTask() {},
+    sortTasks(state) {
+      state.tasks.sort(function (taskA, taskB) {
+        const taskAprogress = taskA.progress;
+        const taskBprogress = taskB.progress;
+        if (taskAprogress < taskBprogress) return -1;
+        if (taskAprogress > taskBprogress) return 1;
+      });
+    },
+    setTimer(state, action) {
+      state.tasks = state.tasks.map((t) =>
+        t.id === action.payload.id
+          ? {
+              ...t,
+              timer: action.payload.timer,
+            }
+          : t,
+      );
+    },
+    timeForTask(state, action) {
+      state.tasks = state.tasks.map((t) =>
+        t.id === action.payload ? { ...t, time: !t.time } : t,
+      );
+      console.log(state.tasks);
+    },
+    timerCounter(state, action) {
+      state.tasks = state.tasks.map((t) =>
+        t.id === action.payload
+          ? {
+              ...t,
+              timer: t.timer > 0 ? t.timer - 1 : 0,
+            }
+          : t,
+      );
+    },
+    setSearchQuery(state, action) {
+      state.searchQuery = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -34,7 +69,7 @@ const taskSlice = createSlice({
       .addCase(completeTask.fulfilled, (state, action) => {
         state.tasks = state.tasks.map((t) =>
           t.id === action.payload.id
-            ? { ...t, progress: action.payload.progress }
+            ? { ...t, progress: action.payload.progress, timer: 0, time: false }
             : t,
         );
         state.loading = false;
@@ -48,8 +83,31 @@ const taskSlice = createSlice({
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
         state.tasks = state.tasks.filter((t) => t.id !== action.payload);
+        state.loading = false;
       })
       .addCase(deleteTask.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
+      })
+      .addCase(createTask.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createTask.fulfilled, (state, action) => {
+        state.tasks.push(action.payload);
+        state.loading = false;
+      })
+      .addCase(createTask.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
+      })
+      .addCase(clearTasks.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(clearTasks.fulfilled, (state, action) => {
+        state.tasks = state.tasks.filter((t) => t.id !== action.payload);
+        state.loading = false;
+      })
+      .addCase(clearTasks.rejected, (state, action) => {
         state.error = action.error.message;
         state.loading = false;
       });
@@ -87,10 +145,34 @@ export const deleteTask = createAsyncThunk("task/deleteTask", async (id) => {
     method: "DELETE",
   });
   if (!res.ok) throw new Error("Failed to delete task");
-  const data = await res.json();
-  console.log(id);
   return id;
 });
 
-export const { createTask } = taskSlice.actions;
+export const createTask = createAsyncThunk("task/createTask", async (task) => {
+  const res = await fetch("http://localhost:8000/tasks", {
+    method: "POST",
+    body: JSON.stringify(task),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to create task");
+  }
+  const data = await res.json();
+  return data;
+});
+
+export const clearTasks = createAsyncThunk("task/clearTasks", async (id) => {
+  const res = await fetch(`http://localhost:8000/tasks/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Failed to delete task");
+  return id;
+});
+export const {
+  setTimer,
+  sortTasks,
+  timeForTask,
+  timerCounter,
+  setSearchQuery,
+} = taskSlice.actions;
 export default taskSlice.reducer;
