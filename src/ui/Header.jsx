@@ -5,10 +5,12 @@ import user from "../features/user/user";
 import { logout } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { clearTasks, sortTasks } from "../features/task/taskSlice";
+import { memo } from "react";
+
 const headerClass =
   "bg-sky-200/35 rounded-md  py-3 px-1  md:px-2 shadow-md flex max-h-full ";
 
-function Header({ onAddClick }) {
+const Header = memo(function Header({ onAddClick }) {
   const { tasks } = useSelector((store) => store.task);
   const dispatch = useDispatch();
   async function handleDelete() {
@@ -63,6 +65,5 @@ function Header({ onAddClick }) {
       </div>
     </header>
   );
-}
-
+});
 export default Header;

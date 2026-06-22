@@ -5,7 +5,7 @@ import {
   completeTask,
   fetchTasks,
   deleteTask,
-  timeForTask,
+  timerOpenTask,
   timerCounter,
   setTimer,
 } from "../task/taskSlice";
@@ -15,15 +15,13 @@ function TaskList() {
   const { tasks, loading, error, searchQuery } = useSelector(
     (store) => store.task,
   );
+  const dispatch = useDispatch();
 
   const filteredTasks = tasks.filter((task) =>
     task.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  const dispatch = useDispatch();
-
   function timeHandeler(e, taskId) {
-    console.log(e.target.value);
     dispatch(
       setTimer({
         id: taskId,
@@ -31,6 +29,7 @@ function TaskList() {
       }),
     );
   }
+
   function formatTime(seconds) {
     const min = Math.floor(seconds / 60);
 
@@ -84,7 +83,7 @@ function TaskList() {
           </div>
         </section>
         <div>
-          {task.time && !task.progress ? (
+          {task.timerOpen && !task.progress ? (
             <input
               type="number"
               onChange={(e) => timeHandeler(e, task.id)}
@@ -94,7 +93,7 @@ function TaskList() {
           <Button
             disabled={task.progress}
             className=" ml-1 pl-1 leading-loose text-2xl border-sky-500/10"
-            onClick={() => dispatch(timeForTask(task.id))}
+            onClick={() => dispatch(timerOpenTask(task.id))}
           >
             {task.timer > 0 ? (
               <p>⏰ {formatTime(task.timer)}</p>

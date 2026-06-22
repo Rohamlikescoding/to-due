@@ -30,9 +30,9 @@ const taskSlice = createSlice({
           : t,
       );
     },
-    timeForTask(state, action) {
+    timerOpenTask(state, action) {
       state.tasks = state.tasks.map((t) =>
-        t.id === action.payload ? { ...t, time: !t.time } : t,
+        t.id === action.payload ? { ...t, timerOpen: !t.timerOpen } : t,
       );
       console.log(state.tasks);
     },
@@ -171,7 +171,7 @@ export const clearTasks = createAsyncThunk("task/clearTasks", async (id) => {
 export const {
   setTimer,
   sortTasks,
-  timeForTask,
+  timerOpenTask,
   timerCounter,
   setSearchQuery,
 } = taskSlice.actions;
